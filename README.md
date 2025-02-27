@@ -97,7 +97,7 @@ To set up and run this project locally:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/CTW_etl_pipeline.git
+   git clone https://github.com/avitosilva/CTW_etl_pipeline.git
    cd CTW_etl_pipeline
    ```
 2. **Create the virtual environment**:
