@@ -9,13 +9,27 @@ pd.set_option('display.max_rows', None)
 
 def load_data(file_path, encoding="ISO-8859-1"):
     """
-    Load CSV data into a DataFrame.
+    Load CSV data into a pandas DataFrame.
+    
+    Parameters:
+    - file_path (str): Path to the CSV file.
+    - encoding (str): Encoding type for the CSV file (default is ISO-8859-1).
+    
+    Returns:
+    - pd.DataFrame: DataFrame containing the loaded data.
     """
     return pd.read_csv(file_path, encoding=encoding, lineterminator="\n")
 
 def drop_columns(df, columns_to_drop):
     """
-    Drop specified columns from the DataFrame, only if they exist.
+    Drop specified columns from the DataFrame.
+    
+    Parameters:
+    - df (pd.DataFrame): The DataFrame from which columns are to be dropped.
+    - columns_to_drop (list): List of column names to be dropped from the DataFrame.
+    
+    Returns:
+    - pd.DataFrame: DataFrame with the specified columns removed.
     """
     existing_columns = [col for col in columns_to_drop if col in df.columns]
     return df.drop(columns=existing_columns, errors="ignore")
@@ -24,6 +38,14 @@ def fill_missing_values(df, numerical_columns, categorical_columns):
     """
     Fill missing values in numerical and categorical columns.
     Numerical columns are filled with the median; categorical columns with the mode.
+    
+    Parameters:
+    - df (pd.DataFrame): The DataFrame with missing values.
+    - numerical_columns (list): List of numerical column names.
+    - categorical_columns (list): List of categorical column names.
+    
+    Returns:
+    - pd.DataFrame: DataFrame with missing values filled.
     """
     # Fill numerical columns with median
     for col in numerical_columns:
@@ -40,12 +62,26 @@ def fill_missing_values(df, numerical_columns, categorical_columns):
 def merge_dataframes(df1, df2, merge_on='Country'):
     """
     Merge two dataframes on a specified column.
+    
+    Parameters:
+    - df1 (pd.DataFrame): First DataFrame to merge.
+    - df2 (pd.DataFrame): Second DataFrame to merge.
+    - merge_on (str): Column name to merge the DataFrames on (default is 'Country').
+    
+    Returns:
+    - pd.DataFrame: Merged DataFrame.
     """
     return pd.merge(df1, df2, on=merge_on, how='left')
 
 def handle_duplicates(df):
     """
-    Check and handle duplicates in the DataFrame.
+    Handle duplicates in the DataFrame by removing them.
+    
+    Parameters:
+    - df (pd.DataFrame): DataFrame containing potential duplicates.
+    
+    Returns:
+    - pd.DataFrame: DataFrame with duplicates removed.
     """
     duplicates = df.duplicated().sum()
     print(f"Number of duplicate rows: {duplicates}")
@@ -53,8 +89,16 @@ def handle_duplicates(df):
 
 def clean_terrorism_data(terrorism_df):
     """
-    Clean and preprocess the terrorism dataset.
+    Clean and preprocess the terrorism dataset by removing unnecessary columns
+    and filling missing values.
+    
+    Parameters:
+    - terrorism_df (pd.DataFrame): The raw terrorism DataFrame.
+    
+    Returns:
+    - pd.DataFrame: Cleaned terrorism DataFrame.
     """
+
     # List of columns to drop
     columns_to_drop = [
         "approxdate", "resolution", "location", "summary", "alternative", "alternative_txt",
@@ -93,8 +137,15 @@ def clean_terrorism_data(terrorism_df):
 
 def clean_country_data(country_df):
     """
-    Clean and preprocess the country dataset.
+    Clean and preprocess the country dataset by removing redundant columns.
+    
+    Parameters:
+    - country_df (pd.DataFrame): The raw country data DataFrame.
+    
+    Returns:
+    - pd.DataFrame: Cleaned country data DataFrame.
     """
+
     # Clean the column names by stripping unwanted whitespace or special characters
     country_df.columns = country_df.columns.str.strip()
 
@@ -113,9 +164,16 @@ def clean_country_data(country_df):
 
 
 def main():
+
+    """
+    Main function to run the ETL pipeline. Loads datasets, cleans them,
+    merges them, handles duplicates, and fills missing values. The result
+    is saved to a CSV file.
+    """
+
     # Load datasets
-    terrorism_data_path = "/home/avito/academy/avitosilva/datasets/globalterrorism.csv"
-    country_data_path = "/home/avito/academy/avitosilva/datasets/world-data-2023.csv"
+    terrorism_data_path = "/home/avito/academy/avitosilva/datasets/globalterrorism.csv" # Replace to your own path
+    country_data_path = "/home/avito/academy/avitosilva/datasets/world-data-2023.csv" # Replace to your own path
     
     terrorism_df = load_data(terrorism_data_path)
     country_df = load_data(country_data_path)
