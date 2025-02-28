@@ -107,7 +107,13 @@ def clean_terrorism_data(terrorism_df):
         "claimmode", "claimmode2", "claimmode3", "propextent", "propvalue", "propcomment",
         "nhostkid", "nhostkidus", "nhours", "ndays", "ransom", "ransomamt", "ransompaid", "ransompaidus",
         "ransomnote", "hostkidoutcome", "nreleased", "scite1", "scite2", "scite3", "addnotes","INT_LOG",
-        "INT_IDEO",	"INT_MISC",	"INT_ANY","country", "region",
+        "INT_IDEO",	"INT_MISC",	"INT_ANY","country", "region", "motive", "gname2", "gname3", "compclaim",
+        "crit1", "crit2", "crit3", "doubtterr", "vicinity", "kidhijcountry", "divert", "eventid", "dbsource",
+        "guncertain1", "nperps", "claimed", "claimmode_txt", "nkill", "nkillus", "nkillter", "nwound",
+        "nwoundus", "nwoundte", "extended", "specificity", "multiple", "individual", "nperpcap", "propextent_txt",
+        "attacktype1_txt", "attacktype2_txt", "attacktype3_txt", "targtype1_txt", "targsubtype1_txt", "natlty1_txt",
+        "weaptype1_txt", "weapsubtype1_txt", "propextent_txt", "hostkidoutcome_txt",
+        
         # Additional columns with >60% missing data
         "targtype2", "targtype2_txt", "targsubtype2", "targsubtype2_txt", "corp2", "target2", "natlty2", "natlty2_txt",
         "targtype3", "targtype3_txt", "targsubtype3", "targsubtype3_txt", "corp3", "target3", "natlty3", "natlty3_txt",
@@ -121,8 +127,8 @@ def clean_terrorism_data(terrorism_df):
     
     # Columns to fill missing values
     numerical_columns = [
-        'latitude', 'longitude', 'specificity', 'doubtterr', 'targsubtype1', 'nperps', 'nperpcap', 
-        'claimed', 'nkill', 'nkillus', 'nkillter', 'nwound', 'nwoundus', 'nwoundte'
+        'latitude', 'longitude', 'specificity', 'doubtterr', 'targsubtype1', 'nperpcap', 
+        'nkill', 'nkillus', 'nkillter', 'nwound', 'nwoundus', 'nwoundte'
     ]
     
     categorical_columns = [
@@ -153,7 +159,10 @@ def clean_country_data(country_df):
     columns_to_drop = [
         'Abbreviation', 'Calling Code', 'Capital/Major City', 'Largest city',
         'Population: Labor force participation (%)', 'Urban_population', 'Currency-Code',
-        'Gasoline Price', 'Fertility Rate', 'Latitude', 'Longitude'
+        'Gasoline Price', 'Fertility Rate', 'Latitude', 'Longitude', 'Agricultural Land (%)',
+        'Maternal mortality ratio', 'Out of pocket health expenditure', 'Physicians per thousand',
+        'CPI Change (%)', 'Birth Rate', 'Infant mortality', 'Official language', 'Agricultural Land (%)',
+        'Gross primary education enrollment (%)', 'Gross tertiary education enrollment (%)'
     ]
     
     # Drop redundant columns (only if they exist)
@@ -184,8 +193,33 @@ def main():
     # Clean country data
     country_df = clean_country_data(country_df)
     
-    # Rename columns for consistency in merge
-    terrorism_df.rename(columns={'country_txt': 'Country'}, inplace=True)
+    # Rename columns for consistency
+    terrorism_df.rename(columns={
+        'country_txt': 'Country',
+        'iyear': 'Year',
+        'imonth': 'Month',
+        'iday': 'Day',
+        'region_txt': 'Region',
+        'provstate': 'Province/State',
+        'city': 'City',
+        'latitude': 'Latitude',
+        'longitude': 'Longitude',
+        'success': 'Success',
+        'suicide': 'Suicide',
+        'attacktype1': 'Primary Attack Type',
+        'attacktype2': 'Secondary Attack Type',
+        'attacktype3': 'Tertiary Attack Type',
+        'targtype1': 'Primary Target Type',
+        'targsubtype1': 'Primary Target Subtype',
+        'corp1': 'Target Corporation',
+        'target1': 'Target Name',
+        'natlty1': 'Target Nationality',
+        'gname': 'Terrorist Group',
+        'weaptype1': 'Weapon Type',
+        'property': 'Property Damage',
+        'ishostkid': 'Hostage Situation'
+    }, inplace=True)
+
     
     # Merge datasets
     merged_df = merge_dataframes(terrorism_df, country_df, merge_on='Country')
