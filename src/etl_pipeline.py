@@ -99,6 +99,13 @@ def clean_terrorism_data(terrorism_df):
     - pd.DataFrame: Cleaned terrorism DataFrame.
     """
 
+    # Strip whitespace and special characters from column names
+    terrorism_df.columns = terrorism_df.columns.str.strip()
+
+    # Drop the unwanted 'related' column (now properly recognized)
+    if 'related' in terrorism_df.columns:
+        terrorism_df = terrorism_df.drop(columns=['related'])
+
     # List of columns to drop
     columns_to_drop = [
         "approxdate", "resolution", "location", "summary", "alternative", "alternative_txt",
@@ -111,8 +118,8 @@ def clean_terrorism_data(terrorism_df):
         "crit1", "crit2", "crit3", "doubtterr", "vicinity", "kidhijcountry", "divert", "eventid", "dbsource",
         "guncertain1", "nperps", "claimed", "claimmode_txt", "nkill", "nkillus", "nkillter", "nwound",
         "nwoundus", "nwoundte", "extended", "specificity", "multiple", "individual", "nperpcap", "propextent_txt",
-        "attacktype1_txt", "attacktype2_txt", "attacktype3_txt", "targtype1_txt", "targsubtype1_txt", "natlty1_txt",
-        "weaptype1_txt", "weapsubtype1_txt", "propextent_txt", "hostkidoutcome_txt",
+        "attacktype1", "attacktype2", "attacktype3", "targtype1", "targsubtype1", "natlty1",
+        "weaptype1", "weapsubtype1_txt", "propextent_txt", "hostkidoutcome_txt",
         
         # Additional columns with >60% missing data
         "targtype2", "targtype2_txt", "targsubtype2", "targsubtype2_txt", "corp2", "target2", "natlty2", "natlty2_txt",
@@ -206,16 +213,16 @@ def main():
         'longitude': 'Longitude',
         'success': 'Success',
         'suicide': 'Suicide',
-        'attacktype1': 'Primary Attack Type',
-        'attacktype2': 'Secondary Attack Type',
-        'attacktype3': 'Tertiary Attack Type',
-        'targtype1': 'Primary Target Type',
-        'targsubtype1': 'Primary Target Subtype',
+        'attacktype1_txt': 'Primary Attack Type',
+        'attacktype2_txt': 'Secondary Attack Type',
+        'attacktype3_txt': 'Tertiary Attack Type',
+        'targtype1_txt': 'Primary Target Type',
+        'targsubtype1_txt': 'Primary Target Subtype',
         'corp1': 'Target Corporation',
         'target1': 'Target Name',
-        'natlty1': 'Target Nationality',
+        'natlty1_txt': 'Target Nationality',
         'gname': 'Terrorist Group',
-        'weaptype1': 'Weapon Type',
+        'weaptype1_txt': 'Weapon Type',
         'property': 'Property Damage',
         'ishostkid': 'Hostage Situation'
     }, inplace=True)
