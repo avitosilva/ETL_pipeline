@@ -188,8 +188,8 @@ def main():
     """
 
     # Load datasets
-    terrorism_data_path = "/home/avito/academy/avitosilva/datasets/globalterrorism.csv" # Replace to your own path
-    country_data_path = "/home/avito/academy/avitosilva/datasets/world-data-2023.csv" # Replace to your own path
+    terrorism_data_path = "/home/alexa/dev/ETL_pipeline/datasets/globalterrorism.csv" # Replace to your own path
+    country_data_path = "/home/alexa/dev/ETL_pipeline/datasets/world-data-2023.csv" # Replace to your own path
     
     terrorism_df = load_data(terrorism_data_path)
     country_df = load_data(country_data_path)
